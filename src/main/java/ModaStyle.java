@@ -82,17 +82,51 @@ public class ModaStyle {
 
     //METODO REGISTRAR PERSONA
     public boolean registrarPersona(PersonaVinculada persona){
-      return false;
+        if (buscarPersona(persona.getDocumento()) == null) {
+            listaPersonas.add(persona);
+            return true;
+        }
+        return false;
     }
-
+    //METODO VERIFICAR PERSONA
+    public PersonaVinculada buscarPersona (String documento){
+        for (PersonaVinculada persona: listaPersonas){
+            if (documento.equalsIgnoreCase(persona.getDocumento())){
+                return persona;
+            }
+        }
+        return null;
+    }
     //METODO PRENDAS AGOTADAS
     public boolean consultarPrendasAgotadas(){
+        for (Prenda prenda: listaPrendas){
+            for (Sucursal sucursal: listaSucursales){
+                for(RegistroInventario inventario: sucursal.getListaInventario()){
+                    if(prenda.getCodigo().equalsIgnoreCase(inventario.getPrenda(prenda.getCodigo()))){
+
+                    }
+                }
+            }
+        }
         return false;
     }
 
     //METODO PRENDA MAS VENDIDAD
     public Prenda obtenerPrendaMasVendida(){
+        if (listaPrendas.size() == 0) {
+            return null;
+        }
 
+        Prenda prendaMasVendida = listaPrendas.get(0);
+
+        for (int i = 1; i < listaPrendas.size(); i++) {
+            if (listaPrendas.get(i).calcularTotalUnidadesVendidas()
+                    > prendaMasVendida.calcularTotalUnidadesVendidas()) {
+                prendaMasVendida = listaPrendas.get(i);
+            }
+        }
+
+        return prendaMasVendida;
     }
 
     @Override

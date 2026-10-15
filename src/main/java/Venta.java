@@ -6,17 +6,20 @@ public class Venta {
     private String codigo;
     private LocalDate fecha;
     private Cliente cliente;
-    private Empleado empleado;
+    private Empleado vendedor;
     private Sucursal sucursal;
     private List<DetalleVenta> listaDetalles;
+    private boolean confirmada;
 
-    public Venta(String codigo, LocalDate fecha, Cliente cliente, Empleado empleado, Sucursal sucursal) {
+    public Venta(String codigo, LocalDate fecha, Cliente cliente,
+                 Empleado vendedor, Sucursal sucursal) {
         this.codigo = codigo;
         this.fecha = fecha;
         this.cliente = cliente;
-        this.empleado = empleado;
+        this.vendedor = vendedor;
         this.sucursal = sucursal;
         this.listaDetalles = new ArrayList<>();
+        this.confirmada = false;
     }
 
     public String getCodigo() {
@@ -43,12 +46,12 @@ public class Venta {
         this.cliente = cliente;
     }
 
-    public Empleado getEmpleado() {
-        return empleado;
+    public Empleado getVendedor() {
+        return vendedor;
     }
 
-    public void setEmpleado(Empleado empleado) {
-        this.empleado = empleado;
+    public void setVendedor(Empleado vendedor) {
+        this.vendedor = vendedor;
     }
 
     public Sucursal getSucursal() {
@@ -67,20 +70,99 @@ public class Venta {
         this.listaDetalles = listaDetalles;
     }
 
-    // Métodos pendientes
+    public boolean isConfirmada() {
+        return confirmada;
+    }
 
-    public void agregarDetalle(DetalleVenta detalle) {
+    // Métodos de lógica
+
+    public boolean agregarDetalle(DetalleVenta detalle) {
+        if (confirmada || detalle == null) {
+            return false;
+        }
+
+        listaDetalles.add(detalle);
+        return true;
+    }
+
+    public boolean agregarDetalle(RegistroInventario inventario, int cantidad) {
+        if (confirmada || cliente == null || inventario == null
+                || inventario.getPrenda() == null || cantidad <= 0) {
+            return false;
+        }
+
+        double precioUnitarioConRecargo = inventario.getPrenda().calcularPrecioConRecargo();
+        double subtotal = cantidad * precioUnitarioConRecargo;
+        DetalleVenta detalle = new DetalleVenta(
+                inventario, cantidad, precioUnitarioConRecargo, subtotal);
+        return agregarDetalle(detalle);
     }
 
     public boolean verificarDisponibilidadTotal() {
-        return false;
+        if (listaDetalles.size() == 0 || sucursal == null) {
+            return false;
+        }
+
+        for (int i = 0; i < listaDetalles.size(); i++) {
+            if (listaDetalles.get(i) == null) {
+                return false;
+            }
+
+            RegistroInventario inventario = listaDetalles.get(i).getInventario();
+            if (inventario == null || listaDetalles.get(i).getCantidadComprada() <= 0) {
+                return false;
+            }
+
+            if (inventario.getSucursal() != sucursal) {
+                return false;
+            }
+
+            int cantidadTotal = calcularCantidadSolicitada(inventario);
+            if (!inventario.tieneStockSuficiente(cantidadTotal)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public boolean confirmarVenta() {
-        return false;
+        if (confirmada || !verificarDisponibilidadTotal()) {
+            return false;
+        }
+
+        for (int i = 0; i < listaDetalles.size(); i++) {
+            DetalleVenta detalle = listaDetalles.get(i);
+            detalle.getInventario().descontarExistencias(detalle.getCantidadComprada());
+            detalle.getInventario().registrarDetalleVendido(detalle);
+        }
+
+        if (sucursal.getListaVentas() == null) {
+            sucursal.setListaVentas(new ArrayList<>());
+        }
+        sucursal.getListaVentas().add(this);
+        confirmada = true;
+        return true;
     }
 
     public double calcularValorTotal() {
-        return 0;
+        double total = 0;
+        for (DetalleVenta detalle : listaDetalles) {
+            total += detalle.calcularSubtotal();
+        }
+        return total-(total*cliente.obtenerDescuento());
+    }
+
+    private int calcularCantidadSolicitada(RegistroInventario inventario) {
+        int cantidadTotal = 0;
+
+        for (int i = 0; i < listaDetalles.size(); i++) {
+            if (listaDetalles.get(i).getInventario() == inventario) {
+                cantidadTotal = cantidadTotal
+                        + listaDetalles.get(i).getCantidadComprada();
+            }
+        }
+
+        return cantidadTotal;
     }
 }
