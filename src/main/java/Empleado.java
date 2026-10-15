@@ -9,7 +9,7 @@ public class Empleado extends PersonaVinculada {
 
 //RELACIONES
 
-    public Sucursal sucursal;
+    private Sucursal sucursal;
     private List<Venta>  listaVentas;
 
 
@@ -63,5 +63,12 @@ public class Empleado extends PersonaVinculada {
         this.listaVentas = listaVentas;
     }
 
-
+    @Override
+    public String toString() {
+        return "codigoEmpleado='" + codigoEmpleado + '\'' +
+                ", fechaContratacion=" + fechaContratacion +
+                ", salarioBasico=" + salarioBasico +
+                ", sucursal=" + sucursal +
+                ", listaVentas=" + listaVentas;
+    }
 }

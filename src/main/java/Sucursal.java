@@ -75,4 +75,35 @@ public class Sucursal {
     public void setListaEmpleados(List<Empleado> listaEmpleados) {
         this.listaEmpleados = listaEmpleados;
     }
+
+    //METODO EXISTENCIA
+    public boolean registarExistencia (Prenda prenda,String talla,String color,int cantidad){
+    return false;
+    }
+
+    //METODO PRENDAS DISPONIBLES
+    public int consultarPrendasDisponibles(){
+
+    }
+
+    //METODO REGISTRAR VENTAS
+    public boolean registrarVenta(Venta venta){
+        return false;
+    }
+
+    //METODO CALCULAR INGRESO
+    public double calcularIngresosTotales(){
+
+    }
+
+    @Override
+    public String toString() {
+        return codigo='" + codigo + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", ciudad='" + ciudad + '\'' +
+                ", listaInventario=" + listaInventario +
+                ", listaVentas=" + listaVentas +
+                ", listaEmpleados=" + listaEmpleados;
+    }
 }
