@@ -2,12 +2,12 @@ public class Cliente  extends PersonaVinculada{
     private String codigoAfiliacion;
 
     //RELACION
-    private categoria CategoriaCliente;
+    private CategoriaCliente CategoriaCliente;
 
     public Cliente(String documento, String nombreCompleto, String correo, String telefono, String codigoAfiliacion,CategoriaCliente categoria) {
         super(documento, nombreCompleto, correo, telefono);
         this.codigoAfiliacion = codigoAfiliacion;
-        this.categoria= CategoriaCliente;
+        this.CategoriaCliente= CategoriaCliente;
     }
 
     public String getCodigoAfiliacion() {
@@ -18,15 +18,15 @@ public class Cliente  extends PersonaVinculada{
         this.codigoAfiliacion = codigoAfiliacion;
     }
 
-    public categoria getCategoriaCliente() {
+    public CategoriaCliente getCategoriaCliente() {
         return CategoriaCliente;
     }
 
-    public void setCategoriaCliente(categoria categoriaCliente) {
+    public void setCategoriaCliente(CategoriaCliente categoriaCliente) {
         CategoriaCliente = categoriaCliente;
     }
 
     public double obtenerDescuento(){
-
+        return 0;
     }
 }
