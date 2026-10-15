@@ -8,7 +8,7 @@ public class Prenda {
     private double precioBase;
     //Relaciones
     private CategoriaPrenda categoria;
-    private List<registroInventario> listaInventario;
+    private List<RegistroInventario> listaInventario;
 
     public Prenda(String codigo, String nombre, String marca, double precioBase, CategoriaPrenda categoria) {
         this.codigo = codigo;
@@ -59,11 +59,11 @@ public class Prenda {
         this.categoria = categoria;
     }
 
-    public List<registroInventario> getListaInventario() {
+    public List<RegistroInventario> getListaInventario() {
         return listaInventario;
     }
 
-    public void setListaInventario(List<registroInventario> listaInventario) {
+    public void setListaInventario(List<RegistroInventario> listaInventario) {
         this.listaInventario = listaInventario;
     }
 

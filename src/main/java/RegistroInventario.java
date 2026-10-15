@@ -1,4 +1,4 @@
-public class registroInventario {
+public class RegistroInventario {
     private String color;
     private int cantidadDisponible;
 
