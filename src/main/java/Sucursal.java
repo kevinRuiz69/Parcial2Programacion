@@ -83,7 +83,7 @@ public class Sucursal {
 
     //METODO PRENDAS DISPONIBLES
     public int consultarPrendasDisponibles(){
-
+return 0;
     }
 
     //METODO REGISTRAR VENTAS
@@ -93,7 +93,7 @@ public class Sucursal {
 
     //METODO CALCULAR INGRESO
     public double calcularIngresosTotales(){
-
+        return 0;
     }
 
     @Override

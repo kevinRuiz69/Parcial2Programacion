@@ -68,13 +68,32 @@ public class Prenda {
     }
 
     //METODO CALCULAR PRECIO CON RECARGO
-    public double calcularPrecioRecargo(){
-
+    public double calcularPrecioConRecargo(){
+        if (categoria == null) {
+            return precioBase;
+        }
+        return precioBase * (1 + categoria.getRecargo());
     }
 
     //METODO UNIDADES VENDIDAS
     public int calcularTotalUnidadesVendidas(){
+        int totalUnidades = 0;
 
+        if (listaInventario == null) {
+            return totalUnidades;
+        }
+
+        for (RegistroInventario inventario : listaInventario) {
+            if (inventario != null && inventario.getListaDetallesVendidos() != null) {
+                for (DetalleVenta detalle : inventario.getListaDetallesVendidos()) {
+                    if (detalle != null) {
+                        totalUnidades += detalle.getCantidadComprada();
+                    }
+                }
+            }
+        }
+
+        return totalUnidades;
     }
 
     @Override

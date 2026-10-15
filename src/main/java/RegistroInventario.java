@@ -1,18 +1,23 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class RegistroInventario {
     private String color;
     private int cantidadDisponible;
 
     //RELACONES
     public Prenda prenda;
-    public Sucursal Sucursal;
+    private Sucursal sucursal;
     private TallaPrenda tallaPrenda;
+    private List<DetalleVenta> listaDetallesVendidos;
 
-    public registroInventario(String color, int cantidadDisponible, Prenda prenda, Sucursal sucursal, TallaPrenda tallaPrenda) {
+    public RegistroInventario(String color, int cantidadDisponible, Prenda prenda, Sucursal sucursal, TallaPrenda tallaPrenda) {
         this.color = color;
         this.cantidadDisponible = cantidadDisponible;
         this.prenda = prenda;
-        Sucursal = sucursal;
+        this.sucursal = sucursal;
         this.tallaPrenda = tallaPrenda;
+        this.listaDetallesVendidos = new ArrayList<>();
     }
 
     public String getColor() {
@@ -40,11 +45,11 @@ public class RegistroInventario {
     }
 
     public Sucursal getSucursal() {
-        return Sucursal;
+        return sucursal;
     }
 
     public void setSucursal(Sucursal sucursal) {
-        Sucursal = sucursal;
+        this.sucursal = sucursal;
     }
 
     public TallaPrenda getTallaPrenda() {
@@ -55,14 +60,28 @@ public class RegistroInventario {
         this.tallaPrenda = tallaPrenda;
     }
 
+    public List<DetalleVenta> getListaDetallesVendidos() {
+        return listaDetallesVendidos;
+    }
+
+    public void setListaDetallesVendidos(List<DetalleVenta> listaDetallesVendidos) {
+        this.listaDetallesVendidos = listaDetallesVendidos;
+    }
+
     // METODO STOCK SUFICIENTE
     public boolean tieneStockSuficiente(int cantidad){
-        return false;
+        return cantidad > 0 && cantidadDisponible >= cantidad;
     }
 
     //METODO DESCONTAR EXISTENCIA
-    public void descontarExistencia( int cantidad){
+    public void descontarExistencias(int cantidad){
+        if (tieneStockSuficiente(cantidad)) {
+            cantidadDisponible = cantidadDisponible - cantidad;
+        }
+    }
 
+    public void registrarDetalleVendido(DetalleVenta detalle) {
+        listaDetallesVendidos.add(detalle);
     }
 
     @Override
@@ -70,7 +89,7 @@ public class RegistroInventario {
         return "color='" + color + '\'' +
                 ", cantidadDisponible=" + cantidadDisponible +
                 ", prenda=" + prenda +
-                ", Sucursal=" + Sucursal +
+                ", Sucursal=" + sucursal +
                 ", tallaPrenda=" + tallaPrenda;
     }
 }

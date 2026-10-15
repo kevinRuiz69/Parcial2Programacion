@@ -1,14 +1,14 @@
 public class DetalleVenta {
     private RegistroInventario inventario;
     private int cantidadComprada;
-    private double precioUnitarioFinal;
+    private double precioUnitarioConRecargo;
     private double subtotal;
 
     public DetalleVenta(RegistroInventario inventario, int cantidadComprada,
-                        double precioUnitarioFinal, double subtotal) {
+                        double precioUnitarioConRecargo, double subtotal) {
         this.inventario = inventario;
         this.cantidadComprada = cantidadComprada;
-        this.precioUnitarioFinal = precioUnitarioFinal;
+        this.precioUnitarioConRecargo = precioUnitarioConRecargo;
         this.subtotal = subtotal;
     }
 
@@ -26,35 +26,24 @@ public class DetalleVenta {
 
     public void setCantidadComprada(int cantidadComprada) {
         this.cantidadComprada = cantidadComprada;
+        this.subtotal = cantidadComprada * precioUnitarioConRecargo;
     }
 
-    public double getPrecioUnitarioFinal() {
-        return precioUnitarioFinal;
+    public double getPrecioUnitarioConRecargo() {
+        return precioUnitarioConRecargo;
     }
 
-    public void setPrecioUnitarioFinal(double precioUnitarioFinal) {
-        this.precioUnitarioFinal = precioUnitarioFinal;
+    public void setPrecioUnitarioConRecargo(double precioUnitarioConRecargo) {
+        this.precioUnitarioConRecargo = precioUnitarioConRecargo;
+        this.subtotal = cantidadComprada * precioUnitarioConRecargo;
     }
 
     public double getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(double subtotal) {
-        this.subtotal = subtotal;
-    }
-
-    // Metodo pendiente
-
+    // Métodos de lógica
     public double calcularSubtotal() {
-        return 0;
-    }
-
-    @Override
-    public String toString() {
-        return "inventario=" + inventario +
-                ", cantidadComprada=" + cantidadComprada +
-                ", precioUnitarioFinal=" + precioUnitarioFinal +
-                ", subtotal=" + subtotal ;
+        return cantidadComprada * precioUnitarioConRecargo;
     }
 }
