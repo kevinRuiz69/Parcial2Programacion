@@ -49,4 +49,12 @@ public class DetalleVenta {
     public double calcularSubtotal() {
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return "inventario=" + inventario +
+                ", cantidadComprada=" + cantidadComprada +
+                ", precioUnitarioFinal=" + precioUnitarioFinal +
+                ", subtotal=" + subtotal ;
+    }
 }

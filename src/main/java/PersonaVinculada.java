@@ -42,5 +42,12 @@ public abstract class PersonaVinculada {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
-    
+
+    @Override
+    public String toString() {
+        return documento='" + documento + '\'' +
+                ", nombreCompleto='" + nombreCompleto + '\'' +
+                ", correo='" + correo + '\'' +
+                ", telefono='" + telefono;
+    }
 }
