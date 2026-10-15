@@ -6,11 +6,11 @@ public class Sucursal {
     private String direccion;
     private String ciudad;
     //Relaciones
-    private List<registroInventario> listaInventario;
+    private List<RegistroInventario> listaInventario;
     private List<Venta> listaVentas;
     private List<Empleado> listaEmpleados;
 
-    public Sucursal(String codigo, String nombre, String direccion, String ciudad, List<registroInventario> listaInventario, List<Venta> listaVentas, List<Empleado> listaEmpleados) {
+    public Sucursal(String codigo, String nombre, String direccion, String ciudad, List<RegistroInventario> listaInventario, List<Venta> listaVentas, List<Empleado> listaEmpleados) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.direccion = direccion;
@@ -52,11 +52,11 @@ public class Sucursal {
         this.ciudad = ciudad;
     }
 
-    public List<registroInventario> getListaInventario() {
+    public List<RegistroInventario> getListaInventario() {
         return listaInventario;
     }
 
-    public void setListaInventario(List<registroInventario> listaInventario) {
+    public void setListaInventario(List<RegistroInventario> listaInventario) {
         this.listaInventario = listaInventario;
     }
 
