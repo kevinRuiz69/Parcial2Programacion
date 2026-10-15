@@ -66,4 +66,27 @@ public class Prenda {
     public void setListaInventario(List<registroInventario> listaInventario) {
         this.listaInventario = listaInventario;
     }
+
+    //METODO CALCULAR PRECIO CON RECARGO
+    public double calcularPrecioRecargo(){
+
+    }
+
+    //METODO UNIDADES VENDIDAS
+    public int calcularTotalUnidadesVendidas(){
+
+    }
+
+    @Override
+    public String toString() {
+        return "codigo='" + codigo + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", marca='" + marca + '\'' +
+                ", precioBase=" + precioBase +
+                ", categoria=" + categoria +
+                ", listaInventario=" + listaInventario;
+    }
 }
+
+
+

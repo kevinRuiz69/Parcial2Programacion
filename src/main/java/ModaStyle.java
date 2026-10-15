@@ -95,4 +95,13 @@ public class ModaStyle {
 
     }
 
+    @Override
+    public String toString() {
+        return "nombreComercial='" + nombreComercial + '\'' +
+                ", nit='" + nit + '\'' +
+                ", direccionPrincipal='" + direccionPrincipal + '\'' +
+                ", listaSucursales=" + listaSucursales +
+                ", listaPrendas=" + listaPrendas +
+                ", listaPersonas=" + listaPersonas;
+    }
 }
