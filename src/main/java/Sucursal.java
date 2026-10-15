@@ -98,8 +98,7 @@ public class Sucursal {
 
     @Override
     public String toString() {
-        return codigo='" + codigo + '\'' +
-                ", nombre='" + nombre + '\'' +
+        return codigo=", nombre='" + nombre + '\'' +
                 ", direccion='" + direccion + '\'' +
                 ", ciudad='" + ciudad + '\'' +
                 ", listaInventario=" + listaInventario +
