@@ -13,6 +13,7 @@ public class ModaStyle {
     private List<PersonaVinculada>  listaPersonas;
     private List<RegistroInventario>  listainventarios;
 
+
     public ModaStyle(String nombreComercial, String nit, String direccionPrincipal) {
         this.nombreComercial = nombreComercial;
         this.nit = nit;
@@ -20,7 +21,7 @@ public class ModaStyle {
         this.listaSucursales= new ArrayList<>();
         this.listaPrendas= new ArrayList<>();
         this.listaPersonas=new ArrayList<>();
-        this.listainventarios= new ArrayList<>();
+
     }
 
     public String getNombreComercial() {
@@ -100,8 +101,7 @@ public class ModaStyle {
     }
 
     //METODO PRENDA MAS VENDIDAD
-    public Prenda obtenerPrendaMasVendida(){
-
+    public Prenda obtenerPrendaMasVendida() {
     }
 
     @Override
