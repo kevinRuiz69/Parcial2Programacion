@@ -64,7 +64,11 @@ public class Prenda {
     }
 
     public void setListaInventario(List<RegistroInventario> listaInventario) {
-        this.listaInventario = listaInventario;
+        if (listaInventario == null) {
+            this.listaInventario = new ArrayList<>();
+        } else {
+            this.listaInventario = listaInventario;
+        }
     }
 
     //METODO CALCULAR PRECIO CON RECARGO
