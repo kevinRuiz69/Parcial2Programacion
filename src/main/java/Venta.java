@@ -67,7 +67,11 @@ public class Venta {
     }
 
     public void setListaDetalles(List<DetalleVenta> listaDetalles) {
-        this.listaDetalles = listaDetalles;
+        if (listaDetalles == null) {
+            this.listaDetalles = new ArrayList<>();
+        } else {
+            this.listaDetalles = listaDetalles;
+        }
     }
 
     public boolean isConfirmada() {
@@ -99,26 +103,22 @@ public class Venta {
     }
 
     public boolean verificarDisponibilidadTotal() {
-        if (listaDetalles.size() == 0 || sucursal == null) {
+        if (listaDetalles.size() == 0 || sucursal == null || cliente == null
+                || vendedor == null || vendedor.getSucursal() != sucursal) {
             return false;
         }
 
-        for (int i = 0; i < listaDetalles.size(); i++) {
-            if (listaDetalles.get(i) == null) {
+        for (DetalleVenta detalle : listaDetalles) {
+            if (detalle == null || detalle.getCantidadComprada() <= 0) {
                 return false;
             }
 
-            RegistroInventario inventario = listaDetalles.get(i).getInventario();
-            if (inventario == null || listaDetalles.get(i).getCantidadComprada() <= 0) {
+            RegistroInventario inventario = detalle.getInventario();
+            if (inventario == null || inventario.getSucursal() != sucursal) {
                 return false;
             }
 
-            if (inventario.getSucursal() != sucursal) {
-                return false;
-            }
-
-            int cantidadTotal = calcularCantidadSolicitada(inventario);
-            if (!inventario.tieneStockSuficiente(cantidadTotal)) {
+            if (!inventario.tieneStockSuficiente(calcularCantidadSolicitada(inventario))) {
                 return false;
             }
         }
@@ -131,24 +131,33 @@ public class Venta {
             return false;
         }
 
+        confirmada = true;
+        if (!sucursal.registrarVenta(this)) {
+            confirmada = false;
+            return false;
+        }
+
         for (int i = 0; i < listaDetalles.size(); i++) {
             DetalleVenta detalle = listaDetalles.get(i);
             detalle.getInventario().descontarExistencias(detalle.getCantidadComprada());
             detalle.getInventario().registrarDetalleVendido(detalle);
         }
 
-        if (sucursal.getListaVentas() == null) {
-            sucursal.setListaVentas(new ArrayList<>());
-        }
-        sucursal.getListaVentas().add(this);
-        confirmada = true;
+        cliente.getListaCompras().add(this);
+        vendedor.getListaVentas().add(this);
+
         return true;
     }
 
     public double calcularValorTotal() {
         double total = 0;
         for (DetalleVenta detalle : listaDetalles) {
-            total += detalle.calcularSubtotal();
+            if (detalle != null) {
+                total += detalle.calcularSubtotal();
+            }
+        }
+        if (cliente == null) {
+            return total;
         }
         return total-(total*cliente.obtenerDescuento());
     }
@@ -156,10 +165,9 @@ public class Venta {
     private int calcularCantidadSolicitada(RegistroInventario inventario) {
         int cantidadTotal = 0;
 
-        for (int i = 0; i < listaDetalles.size(); i++) {
-            if (listaDetalles.get(i).getInventario() == inventario) {
-                cantidadTotal = cantidadTotal
-                        + listaDetalles.get(i).getCantidadComprada();
+        for (DetalleVenta detalle : listaDetalles) {
+            if (detalle.getInventario() == inventario) {
+                cantidadTotal += detalle.getCantidadComprada();
             }
         }
 
