@@ -9,6 +9,34 @@ public class Main {
     private static int contadorVentas = 1;
 
     public static void main(String[] args) {
+        Cliente Kevin = new Cliente("1092", "Kevin Ruiz", "kevina.ruizc@uqvirtual.edu.co", "321", "1", CategoriaCliente.ORO);
+        Sucursal sucursal1 = new Sucursal("1", "sucursal1", "armenia", "Armenia");
+        Sucursal sucursal2 = new Sucursal("2", "sucursal2", "centro", "Armenia");
+        Prenda camiseta = new Prenda("P1", "Camiseta", "ModaStyle", 40000,
+                CategoriaPrenda.CAMISETA);
+        Prenda pantalon = new Prenda("P2", "Pantalon", "ModaStyle", 80000,
+                CategoriaPrenda.PANTALON);
+        Prenda zapatos = new Prenda("P3", "Zapatos", "ModaStyle", 120000,
+                CategoriaPrenda.CALZADO);
+        Empleado mariana = new Empleado("10", "Mariana", "mari", "310",
+                "EMP1", new Date(), 10000, sucursal1);
+        Empleado empleado2 = new Empleado("11", "Carlos", "carlos", "311",
+                "EMP2", new Date(), 10000, sucursal2);
+
+        empresa.registrarSucursal(sucursal1);
+        empresa.registrarSucursal(sucursal2);
+        empresa.registrarPrenda(camiseta);
+        empresa.registrarPrenda(pantalon);
+        empresa.registrarPrenda(zapatos);
+        empresa.registrarCliente(Kevin);
+        empresa.registrarEmpleado(mariana);
+        empresa.registrarEmpleado(empleado2);
+
+        sucursal1.registrarExistencia(camiseta, "M", "Negro", 10);
+        sucursal1.registrarExistencia(pantalon, "32", "Azul", 5);
+        sucursal2.registrarExistencia(camiseta, "S", "Blanco", 8);
+        sucursal1.registrarExistencia(camiseta, "S", "Blanco", 0);
+        sucursal2.registrarExistencia(zapatos, "40", "Cafe", 4);
         int opcion = -1;
 
         while (opcion != 0) {
