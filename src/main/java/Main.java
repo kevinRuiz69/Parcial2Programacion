@@ -9,8 +9,35 @@ public class Main {
     private static int contadorVentas = 1;
 
     public static void main(String[] args) {
-        int opcion = -1;
+        Cliente Kevin = new Cliente("1092", "Kevin Ruiz", "kevina.ruizc@uqvirtual.edu.co", "321", "1", CategoriaCliente.ORO);
+        Sucursal sucursal1 = new Sucursal("1", "sucursal1", "armenia", "Armenia");
+        Sucursal sucursal2 = new Sucursal("2", "sucursal2", "centro", "Armenia");
+        Prenda camiseta = new Prenda("P1", "Camiseta", "ModaStyle", 40000,
+                CategoriaPrenda.CAMISETA);
+        Prenda pantalon = new Prenda("P2", "Pantalon", "ModaStyle", 80000,
+                CategoriaPrenda.PANTALON);
+        Prenda zapatos = new Prenda("P3", "Zapatos", "ModaStyle", 120000,
+                CategoriaPrenda.CALZADO);
+        Empleado mariana = new Empleado("10", "Mariana", "mari", "310",
+                "EMP1", new Date(), 10000, sucursal1);
+        Empleado empleado2 = new Empleado("11", "Carlos", "carlos", "311",
+                "EMP2", new Date(), 10000, sucursal2);
 
+        empresa.registrarSucursal(sucursal1);
+        empresa.registrarSucursal(sucursal2);
+        empresa.registrarPrenda(camiseta);
+        empresa.registrarPrenda(pantalon);
+        empresa.registrarPrenda(zapatos);
+        empresa.registrarCliente(Kevin);
+        empresa.registrarEmpleado(mariana);
+        empresa.registrarEmpleado(empleado2);
+
+        sucursal1.registrarExistencia(camiseta, "M", "Negro", 10);
+        sucursal1.registrarExistencia(pantalon, "32", "Azul", 5);
+        sucursal2.registrarExistencia(camiseta, "S", "Blanco", 8);
+        sucursal2.registrarExistencia(zapatos, "40", "Cafe", 4);
+        int opcion = -1;
+        
         while (opcion != 0) {
             String menu = "===== MODASTYLE =====\n" +
                     "1. Registrar sucursal\n" +
@@ -36,61 +63,30 @@ public class Main {
             opcion = Integer.parseInt(entrada);
 
             switch (opcion) {
-                case 1:
-                    registrarSucursal();
-                    break;
-                case 2:
-                    registrarPrenda();
-                    break;
-                case 3:
-                    registrarCliente();
-                    break;
-                case 4:
-                    registrarEmpleado();
-                    break;
-                case 5:
-                    registrarExistencia();
-                    break;
-                case 6:
-                    consultarDisponibles();
-                    break;
-                case 7:
-                    registrarVenta();
-                    break;
-                case 8:
-                    consultarAgotadas();
-                    break;
-                case 9:
-                    consultarVentasEmpleado();
-                    break;
-                case 10:
-                    consultarComprasCliente();
-                    break;
-                case 11:
-                    consultarIngresosSucursal();
-                    break;
-                case 12:
-                    consultarPrendaMasVendida();
-                    break;
-                case 0:
-                    JOptionPane.showMessageDialog(null, "Programa terminado.");
-                    break;
-                default:
-                    JOptionPane.showMessageDialog(null, "Opcion no valida.");
-                    break;
+                case 1: registrarSucursal(); break;
+                case 2: registrarPrenda(); break;
+                case 3: registrarCliente(); break;
+                case 4: registrarEmpleado(); break;
+                case 5: registrarExistencia(); break;
+                case 6: consultarDisponibles(); break;
+                case 7: registrarVenta(); break;
+                case 8: consultarAgotadas(); break;
+                case 9: consultarHistorial(true); break;
+                case 10: consultarHistorial(false); break;
+                case 11: consultarIngresosSucursal(); break;
+                case 12: consultarPrendaMasVendida(); break;
+                case 0: JOptionPane.showMessageDialog(null, "Programa terminado."); break;
+                default: JOptionPane.showMessageDialog(null, "Opcion no valida."); break;
             }
         }
     }
 
     private static void registrarSucursal() {
         String codigo = JOptionPane.showInputDialog("Codigo de la sucursal:");
-        if (codigo == null) return;
         String nombre = JOptionPane.showInputDialog("Nombre:");
-        if (nombre == null) return;
         String direccion = JOptionPane.showInputDialog("Direccion:");
-        if (direccion == null) return;
         String ciudad = JOptionPane.showInputDialog("Ciudad:");
-        if (ciudad == null) return;
+        if (codigo == null || nombre == null || direccion == null || ciudad == null) return;
 
         Sucursal sucursal = new Sucursal(codigo, nombre, direccion, ciudad);
         if (empresa.registrarSucursal(sucursal)) {
@@ -102,17 +98,14 @@ public class Main {
 
     private static void registrarPrenda() {
         String codigo = JOptionPane.showInputDialog("Codigo de la prenda:");
-        if (codigo == null) return;
         String nombre = JOptionPane.showInputDialog("Nombre:");
-        if (nombre == null) return;
         String marca = JOptionPane.showInputDialog("Marca:");
-        if (marca == null) return;
+        if (codigo == null || nombre == null || marca == null) return;
         String entradaPrecio = JOptionPane.showInputDialog("Precio base:");
-        if (entradaPrecio == null) return;
-        double precio = Double.parseDouble(entradaPrecio);
         String entradaCategoria = JOptionPane.showInputDialog(
                 "Categoria:\n1. CAMISETA\n2. PANTALON\n3. VESTIDO\n4. CHAQUETA\n5. CALZADO");
-        if (entradaCategoria == null) return;
+        if (entradaPrecio == null || entradaCategoria == null) return;
+        double precio = Double.parseDouble(entradaPrecio);
         int numeroCategoria = Integer.parseInt(entradaCategoria);
 
         if (numeroCategoria < 1 || numeroCategoria > 5) {
@@ -131,18 +124,14 @@ public class Main {
 
     private static void registrarCliente() {
         String documento = JOptionPane.showInputDialog("Documento:");
-        if (documento == null) return;
         String nombre = JOptionPane.showInputDialog("Nombre completo:");
-        if (nombre == null) return;
         String correo = JOptionPane.showInputDialog("Correo:");
-        if (correo == null) return;
         String telefono = JOptionPane.showInputDialog("Telefono:");
-        if (telefono == null) return;
         String afiliacion = JOptionPane.showInputDialog("Codigo de afiliacion:");
-        if (afiliacion == null) return;
         String entradaCategoria = JOptionPane.showInputDialog(
                 "Categoria del cliente:\n1. BRONCE\n2. PLATA\n3. ORO");
-        if (entradaCategoria == null) return;
+        if (documento == null || nombre == null || correo == null || telefono == null
+                || afiliacion == null || entradaCategoria == null) return;
         int numeroCategoria = Integer.parseInt(entradaCategoria);
 
         if (numeroCategoria < 1 || numeroCategoria > 3) {
@@ -170,17 +159,13 @@ public class Main {
         }
 
         String documento = JOptionPane.showInputDialog("Documento:");
-        if (documento == null) return;
         String nombre = JOptionPane.showInputDialog("Nombre completo:");
-        if (nombre == null) return;
         String correo = JOptionPane.showInputDialog("Correo:");
-        if (correo == null) return;
         String telefono = JOptionPane.showInputDialog("Telefono:");
-        if (telefono == null) return;
         String codigoEmpleado = JOptionPane.showInputDialog("Codigo del empleado:");
-        if (codigoEmpleado == null) return;
         String entradaSalario = JOptionPane.showInputDialog("Salario basico:");
-        if (entradaSalario == null) return;
+        if (documento == null || nombre == null || correo == null || telefono == null
+                || codigoEmpleado == null || entradaSalario == null) return;
         double salario = Double.parseDouble(entradaSalario);
 
         Empleado empleado = new Empleado(documento, nombre, correo, telefono,
@@ -206,11 +191,9 @@ public class Main {
         }
 
         String talla = JOptionPane.showInputDialog("Talla (XS, S, M, L, XL o numero 35 a 44):");
-        if (talla == null) return;
         String color = JOptionPane.showInputDialog("Color:");
-        if (color == null) return;
         String entradaCantidad = JOptionPane.showInputDialog("Cantidad:");
-        if (entradaCantidad == null) return;
+        if (talla == null || color == null || entradaCantidad == null) return;
         int cantidad = Integer.parseInt(entradaCantidad);
 
         if (sucursal.registrarExistencia(prenda, talla, color, cantidad)) {
@@ -229,113 +212,124 @@ public class Main {
             return;
         }
 
-        List<RegistroInventario> disponibles = sucursal.consultarPrendasDisponibles();
-        if (disponibles.size() == 0) {
-            JOptionPane.showMessageDialog(null, "No hay prendas disponibles.");
-            return;
-        }
-        JOptionPane.showMessageDialog(null, mostrarInventario(disponibles));
+        mostrarListaInventario(sucursal.consultarPrendasDisponibles(),
+                "No hay prendas disponibles.");
     }
 
     private static void registrarVenta() {
-        String codigoSucursal = JOptionPane.showInputDialog("Codigo de la sucursal:");
+        String codigoSucursal = JOptionPane.showInputDialog(
+                "Codigo de la sucursal");
         if (codigoSucursal == null) return;
         Sucursal sucursal = empresa.buscarSucursal(codigoSucursal);
-        String documentoCliente = JOptionPane.showInputDialog("Documento del cliente:");
+        if (sucursal == null) {
+            JOptionPane.showMessageDialog(null, "No se encontro esa sucursal.");
+            return;
+        }
+
+        String documentoCliente = JOptionPane.showInputDialog(
+                "Documento del cliente:");
         if (documentoCliente == null) return;
         Cliente cliente = empresa.buscarCliente(documentoCliente);
-        String documentoEmpleado = JOptionPane.showInputDialog("Documento del empleado:");
+        if (cliente == null) {
+            JOptionPane.showMessageDialog(null, "No se encontro ese cliente.");
+            return;
+        }
+
+        String documentoEmpleado = JOptionPane.showInputDialog(
+                "Documento del empleado");
         if (documentoEmpleado == null) return;
         Empleado empleado = empresa.buscarEmpleado(documentoEmpleado);
+        if (empleado == null) {
+            JOptionPane.showMessageDialog(null, "No se encontro ese empleado.");
+            return;
+        }
 
-        if (sucursal == null || cliente == null || empleado == null
-                || empleado.getSucursal() != sucursal) {
-            JOptionPane.showMessageDialog(null, "Revisa la sucursal, el cliente y el empleado.");
+        if (empleado.getSucursal() != sucursal) {
+            JOptionPane.showMessageDialog(null,
+                    "Ese empleado no trabaja en la sucursal seleccionada.");
             return;
         }
 
         Venta venta = new Venta("V" + contadorVentas, LocalDate.now(),
                 cliente, empleado, sucursal);
         contadorVentas++;
-        agregarDetalles(venta, sucursal);
+        if (!agregarDetalles(venta, sucursal)) {
+            JOptionPane.showMessageDialog(null, "Venta cancelada.");
+            return;
+        }
 
         if (venta.confirmarVenta()) {
             JOptionPane.showMessageDialog(null, "Venta confirmada. Total: "
                     + venta.calcularValorTotal());
         } else {
             JOptionPane.showMessageDialog(null,
-                    "No se confirmo la venta. Revisa las cantidades disponibles.");
+                    "No se confirmo. Agrega una prenda y revisa las cantidades disponibles.");
         }
     }
 
-    private static void agregarDetalles(Venta venta, Sucursal sucursal) {
-        int opcion = -1;
-        while (opcion != 0) {
+    private static boolean agregarDetalles(Venta venta, Sucursal sucursal) {
+        boolean agregarOtra = true;
+        while (agregarOtra) {
             List<RegistroInventario> disponibles = sucursal.consultarPrendasDisponibles();
             if (disponibles.size() == 0) {
                 JOptionPane.showMessageDialog(null, "No hay existencias disponibles.");
                 break;
             }
 
-            String mensaje = "Seleccione la prenda (0 para terminar):\n"
+            String mensaje = "Seleccione el numero de la prenda:\n"
                     + mostrarInventario(disponibles);
             String entrada = JOptionPane.showInputDialog(mensaje);
-            if (entrada == null) break;
-            opcion = Integer.parseInt(entrada);
+            if (entrada == null) return false;
+            int opcion = Integer.parseInt(entrada);
             if (opcion > 0 && opcion <= disponibles.size()) {
                 String entradaCantidad = JOptionPane.showInputDialog("Cantidad:");
-                if (entradaCantidad == null) break;
+                if (entradaCantidad == null) return false;
                 int cantidad = Integer.parseInt(entradaCantidad);
                 if (!venta.agregarDetalle(disponibles.get(opcion - 1), cantidad)) {
                     JOptionPane.showMessageDialog(null, "No se pudo agregar el detalle.");
+                } else {
+                    int respuesta = JOptionPane.showConfirmDialog(null,
+                            "¿Desea agregar otra prenda?", "Registrar venta",
+                            JOptionPane.YES_NO_OPTION);
+                    if (respuesta == JOptionPane.YES_OPTION) {
+                        agregarOtra = true;
+                    } else if (respuesta == JOptionPane.NO_OPTION) {
+                        agregarOtra = false;
+                    } else {
+                        return false;
+                    }
                 }
-            } else if (opcion != 0) {
+            } else {
                 JOptionPane.showMessageDialog(null, "Opcion no valida.");
             }
         }
+        return venta.getListaDetalles().size() > 0;
     }
 
     private static void consultarAgotadas() {
-        List<RegistroInventario> agotadas = empresa.consultarPrendasAgotadas();
-        if (agotadas.size() == 0) {
-            JOptionPane.showMessageDialog(null, "No hay prendas agotadas.");
+        mostrarListaInventario(empresa.consultarPrendasAgotadas(),
+                "No hay prendas agotadas.");
+    }
+
+    private static void consultarHistorial(boolean esEmpleado) {
+        String tipo = esEmpleado ? "empleado" : "cliente";
+        String documento = JOptionPane.showInputDialog("Documento del " + tipo + ":");
+        if (documento == null) return;
+        if (esEmpleado) {
+            Empleado empleado = empresa.buscarEmpleado(documento);
+            if (empleado == null) {
+                JOptionPane.showMessageDialog(null, "Empleado no encontrado.");
+                return;
+            }
+            mostrarVentas(empleado.getListaVentas(), "Ventas de " + empleado.getNombreCompleto());
         } else {
-            JOptionPane.showMessageDialog(null, mostrarInventario(agotadas));
+            Cliente cliente = empresa.buscarCliente(documento);
+            if (cliente == null) {
+                JOptionPane.showMessageDialog(null, "Cliente no encontrado.");
+                return;
+            }
+            mostrarVentas(cliente.getListaCompras(), "Compras de " + cliente.getNombreCompleto());
         }
-    }
-
-    private static void consultarVentasEmpleado() {
-        String documento = JOptionPane.showInputDialog("Documento del empleado:");
-        if (documento == null) return;
-        Empleado empleado = empresa.buscarEmpleado(documento);
-        if (empleado == null) {
-            JOptionPane.showMessageDialog(null, "Empleado no encontrado.");
-            return;
-        }
-
-        String texto = "Ventas de " + empleado.getNombreCompleto() + ":\n";
-        for (Venta venta : empleado.getListaVentas()) {
-            texto += "Venta " + venta.getCodigo() + " - Total: "
-                    + venta.calcularValorTotal() + "\n";
-        }
-        JOptionPane.showMessageDialog(null, texto);
-    }
-
-    private static void consultarComprasCliente() {
-        String documento = JOptionPane.showInputDialog("Documento del cliente:");
-        if (documento == null) return;
-        Cliente cliente = empresa.buscarCliente(documento);
-        if (cliente == null) {
-            JOptionPane.showMessageDialog(null, "Cliente no encontrado.");
-            return;
-        }
-
-        String texto = "Compras de " + cliente.getNombreCompleto() + ":\n";
-        for (Venta venta : cliente.getListaCompras()) {
-            texto += "Venta " + venta.getCodigo() + " - Total: "
-                    + venta.calcularValorTotal() + "\n";
-        }
-        JOptionPane.showMessageDialog(null, texto);
     }
 
     private static void consultarIngresosSucursal() {
@@ -367,5 +361,23 @@ public class Main {
             texto += (i + 1) + ". " + inventario.get(i) + "\n";
         }
         return texto;
+    }
+
+    private static void mostrarListaInventario(List<RegistroInventario> inventario,
+                                               String mensajeVacio) {
+        if (inventario.size() == 0) {
+            JOptionPane.showMessageDialog(null, mensajeVacio);
+        } else {
+            JOptionPane.showMessageDialog(null, mostrarInventario(inventario));
+        }
+    }
+
+    private static void mostrarVentas(List<Venta> ventas, String titulo) {
+        String texto = titulo + ":\n";
+        for (Venta venta : ventas) {
+            texto += "Venta " + venta.getCodigo() + " - Total: "
+                    + venta.calcularValorTotal() + "\n";
+        }
+        JOptionPane.showMessageDialog(null, texto);
     }
 }
