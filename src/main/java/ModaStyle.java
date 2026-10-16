@@ -71,13 +71,41 @@ public class ModaStyle {
 
     //METODO REGISTRAR SUCURSAL
 
-    public boolean registrarSucursal( Sucursal sucursal){
-     return  false;
+    public boolean registrarSucursal(Sucursal sucursal){
+        if (buscarSucursal(sucursal.getCodigo()) == null) {
+            listaSucursales.add(sucursal);
+            return true;
+        }
+        return false;
     }
 
     //METODO REGISTRAR PRENDA
-    public boolean registrarPrenda( Prenda prenda){
-      return false;
+    public boolean registrarPrenda(Prenda prenda){
+        if (buscarPrenda(prenda.getCodigo()) == null) {
+            listaPrendas.add(prenda);
+            return true;
+        }
+        return false;
+    }
+
+    //METODO BUSCAR SUCURSAL
+    public Sucursal buscarSucursal(String codigo){
+        for (Sucursal sucursal : listaSucursales) {
+            if (codigo.equalsIgnoreCase(sucursal.getCodigo())) {
+                return sucursal;
+            }
+        }
+        return null;
+    }
+
+    //METODO BUSCAR PRENDA
+    public Prenda buscarPrenda(String codigo){
+        for (Prenda prenda : listaPrendas) {
+            if (codigo.equalsIgnoreCase(prenda.getCodigo())) {
+                return prenda;
+            }
+        }
+        return null;
     }
 
     //METODO REGISTRAR PERSONA
@@ -88,7 +116,7 @@ public class ModaStyle {
         }
         return false;
     }
-    //METODO VERIFICAR PERSONA
+    //METODO BUSCAR PERSONA
     public PersonaVinculada buscarPersona (String documento){
         for (PersonaVinculada persona: listaPersonas){
             if (documento.equalsIgnoreCase(persona.getDocumento())){
@@ -98,17 +126,20 @@ public class ModaStyle {
         return null;
     }
     //METODO PRENDAS AGOTADAS
-    public boolean consultarPrendasAgotadas(){
-        for (Prenda prenda: listaPrendas){
-            for (Sucursal sucursal: listaSucursales){
-                for(RegistroInventario inventario: sucursal.getListaInventario()){
-                    if(prenda.getCodigo().equalsIgnoreCase(inventario.getPrenda(prenda.getCodigo()))){
+    public List<RegistroInventario> consultarPrendasAgotadas(){
+        List<RegistroInventario> listaAgotadas = new ArrayList<>();
 
+        for (Sucursal sucursal : listaSucursales) {
+            if (sucursal.getListaInventario() != null) {
+                for (RegistroInventario inventario : sucursal.getListaInventario()) {
+                    if (inventario.getCantidadDisponible() == 0) {
+                        listaAgotadas.add(inventario);
                     }
                 }
             }
         }
-        return false;
+
+        return listaAgotadas;
     }
 
     //METODO PRENDA MAS VENDIDAD
