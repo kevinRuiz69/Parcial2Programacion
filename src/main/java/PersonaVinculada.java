@@ -45,7 +45,7 @@ public abstract class PersonaVinculada {
 
     @Override
     public String toString() {
-        return documento='" + documento + '\'' +
+        return documento="+ documento + " +
                 ", nombreCompleto='" + nombreCompleto + '\'' +
                 ", correo='" + correo + '\'' +
                 ", telefono='" + telefono;
