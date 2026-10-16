@@ -1,13 +1,18 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cliente  extends PersonaVinculada{
     private String codigoAfiliacion;
 
     //RELACION
     private CategoriaCliente categoriaCliente;
+    private List<Venta> listaCompras;
 
     public Cliente(String documento, String nombreCompleto, String correo, String telefono, String codigoAfiliacion,CategoriaCliente categoria) {
         super(documento, nombreCompleto, correo, telefono);
         this.codigoAfiliacion = codigoAfiliacion;
         this.categoriaCliente = categoria;
+        this.listaCompras = new ArrayList<>();
     }
 
     public String getCodigoAfiliacion() {
@@ -18,12 +23,24 @@ public class Cliente  extends PersonaVinculada{
         this.codigoAfiliacion = codigoAfiliacion;
     }
 
-    public CategoriaCliente getCategoriaCliente() {
+    public CategoriaCliente getCategoria() {
         return categoriaCliente;
     }
 
-    public void setCategoriaCliente(CategoriaCliente categoriaCliente) {
+    public void setCategoria(CategoriaCliente categoriaCliente) {
         this.categoriaCliente = categoriaCliente;
+    }
+
+    public List<Venta> getListaCompras() {
+        return listaCompras;
+    }
+
+    public void setListaCompras(List<Venta> listaCompras) {
+        if (listaCompras == null) {
+            this.listaCompras = new ArrayList<>();
+        } else {
+            this.listaCompras = listaCompras;
+        }
     }
 
     public double obtenerDescuento(){
@@ -32,4 +49,5 @@ public class Cliente  extends PersonaVinculada{
         }
         return categoriaCliente.getDescuento();
     }
+
 }
