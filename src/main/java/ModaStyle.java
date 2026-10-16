@@ -11,6 +11,7 @@ public class ModaStyle {
     private List<Sucursal>  listaSucursales;
     private List<Prenda>  listaPrendas;
     private List<PersonaVinculada>  listaPersonas;
+    private List<RegistroInventario>  listainventarios;
 
     public ModaStyle(String nombreComercial, String nit, String direccionPrincipal) {
         this.nombreComercial = nombreComercial;
@@ -19,6 +20,7 @@ public class ModaStyle {
         this.listaSucursales= new ArrayList<>();
         this.listaPrendas= new ArrayList<>();
         this.listaPersonas=new ArrayList<>();
+        this.listainventarios= new ArrayList<>();
     }
 
     public String getNombreComercial() {
@@ -87,7 +89,14 @@ public class ModaStyle {
 
     //METODO PRENDAS AGOTADAS
     public boolean consultarPrendasAgotadas(){
-        return false;
+        boolean agotadas= false;
+        for(RegistroInventario i:listainventarios){
+            if(i.getCantidadDisponible()==0){
+                System.out.println(i.getPrenda().getNombre());
+                agotadas=true;
+            }
+        }
+        return agotadas;
     }
 
     //METODO PRENDA MAS VENDIDAD

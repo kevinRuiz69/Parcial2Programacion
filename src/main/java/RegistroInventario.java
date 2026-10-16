@@ -7,11 +7,11 @@ public class RegistroInventario {
     public Sucursal Sucursal;
     private TallaPrenda tallaPrenda;
 
-    public registroInventario(String color, int cantidadDisponible, Prenda prenda, Sucursal sucursal, TallaPrenda tallaPrenda) {
+    public RegistroInventario(String color, int cantidadDisponible, Prenda prenda, Sucursal sucursal, TallaPrenda tallaPrenda) {
         this.color = color;
         this.cantidadDisponible = cantidadDisponible;
         this.prenda = prenda;
-        Sucursal = sucursal;
+        this.Sucursal = sucursal;
         this.tallaPrenda = tallaPrenda;
     }
 
