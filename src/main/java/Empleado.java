@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,13 +15,13 @@ public class Empleado extends PersonaVinculada {
 
 
     public Empleado(String documento, String nombreCompleto, String correo, String telefono,
-                    String codigoEmpleado, Date fechaContratacion, double salarioBasico, Sucursal sucursal, List<Venta> listaVentas) {
+                    String codigoEmpleado, Date fechaContratacion, double salarioBasico, Sucursal sucursal) {
         super(documento, nombreCompleto, correo, telefono);
         this.codigoEmpleado = codigoEmpleado;
         this.fechaContratacion = fechaContratacion;
         this.salarioBasico = salarioBasico;
         this.sucursal = sucursal;
-        this.listaVentas = listaVentas;
+        this.listaVentas = new ArrayList<>();
     }
 
     public String getCodigoEmpleado() {
@@ -60,7 +61,11 @@ public class Empleado extends PersonaVinculada {
     }
 
     public void setListaVentas(List<Venta> listaVentas) {
-        this.listaVentas = listaVentas;
+        if (listaVentas == null) {
+            this.listaVentas = new ArrayList<>();
+        } else {
+            this.listaVentas = listaVentas;
+        }
     }
 
     @Override
@@ -68,7 +73,7 @@ public class Empleado extends PersonaVinculada {
         return "codigoEmpleado='" + codigoEmpleado + '\'' +
                 ", fechaContratacion=" + fechaContratacion +
                 ", salarioBasico=" + salarioBasico +
-                ", sucursal=" + sucursal +
+                ", sucursal=" + sucursal.getNombre() +
                 ", listaVentas=" + listaVentas;
     }
 }

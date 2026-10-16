@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sucursal {
@@ -10,14 +11,14 @@ public class Sucursal {
     private List<Venta> listaVentas;
     private List<Empleado> listaEmpleados;
 
-    public Sucursal(String codigo, String nombre, String direccion, String ciudad, List<RegistroInventario> listaInventario, List<Venta> listaVentas, List<Empleado> listaEmpleados) {
+    public Sucursal(String codigo, String nombre, String direccion, String ciudad) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.direccion = direccion;
         this.ciudad = ciudad;
-        this.listaInventario = listaInventario;
-        this.listaVentas = listaVentas;
-        this.listaEmpleados = listaEmpleados;
+        this.listaInventario = new ArrayList<>();
+        this.listaVentas = new ArrayList<>();
+        this.listaEmpleados = new ArrayList<>();
     }
 
     public String getCodigo() {
@@ -57,7 +58,11 @@ public class Sucursal {
     }
 
     public void setListaInventario(List<RegistroInventario> listaInventario) {
-        this.listaInventario = listaInventario;
+        if (listaInventario == null) {
+            this.listaInventario = new ArrayList<>();
+        } else {
+            this.listaInventario = listaInventario;
+        }
     }
 
     public List<Venta> getListaVentas() {
@@ -65,7 +70,11 @@ public class Sucursal {
     }
 
     public void setListaVentas(List<Venta> listaVentas) {
-        this.listaVentas = listaVentas;
+        if (listaVentas == null) {
+            this.listaVentas = new ArrayList<>();
+        } else {
+            this.listaVentas = listaVentas;
+        }
     }
 
     public List<Empleado> getListaEmpleados() {
@@ -73,32 +82,94 @@ public class Sucursal {
     }
 
     public void setListaEmpleados(List<Empleado> listaEmpleados) {
-        this.listaEmpleados = listaEmpleados;
+        if (listaEmpleados == null) {
+            this.listaEmpleados = new ArrayList<>();
+        } else {
+            this.listaEmpleados = listaEmpleados;
+        }
     }
 
-    //METODO EXISTENCIA
-    public boolean registarExistencia (Prenda prenda,String talla,String color,int cantidad){
-    return false;
+    //METODO REGISTRAR EXISTENCIA
+    public boolean registrarExistencia(Prenda prenda, String talla,
+                                       String color, int cantidad){
+        if (prenda == null || talla == null || talla.length() == 0
+                || color == null || color.length() == 0 || cantidad <= 0) {
+            return false;
+        }
+
+        if (verificarExistencia(prenda, talla, color)) {
+            return false;
+        }
+
+        if (prenda.getListaInventario() == null) {
+            prenda.setListaInventario(new ArrayList<>());
+        }
+
+        RegistroInventario nuevoInventario = new RegistroInventario(
+                color, cantidad, prenda, this, talla);
+        listaInventario.add(nuevoInventario);
+        prenda.getListaInventario().add(nuevoInventario);
+        return true;
+    }
+
+    public boolean verificarExistencia(Prenda prenda, String talla, String color) {
+        for (RegistroInventario inventario : listaInventario) {
+            if (inventario.getPrenda().getCodigo().equalsIgnoreCase(prenda.getCodigo())
+                    && inventario.getTalla().equalsIgnoreCase(talla)
+                    && inventario.getColor().equalsIgnoreCase(color)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     //METODO PRENDAS DISPONIBLES
-    public int consultarPrendasDisponibles(){
-return 0;
+    public List<RegistroInventario> consultarPrendasDisponibles(){
+        List<RegistroInventario> listaDisponibles = new ArrayList<>();
+
+        for (RegistroInventario inventario : listaInventario) {
+            if (inventario.getCantidadDisponible() > 0) {
+                listaDisponibles.add(inventario);
+            }
+        }
+
+        return listaDisponibles;
     }
 
     //METODO REGISTRAR VENTAS
     public boolean registrarVenta(Venta venta){
+        if (venta == null || venta.getSucursal() != this || !venta.isConfirmada()
+                || verificarVenta(venta.getCodigo())) {
+            return false;
+        }
+        listaVentas.add(venta);
+        return true;
+    }
+
+    public boolean verificarVenta(String codigo) {
+        for (Venta venta : listaVentas) {
+            if (venta.getCodigo().equalsIgnoreCase(codigo)) {
+                return true;
+            }
+        }
         return false;
     }
 
     //METODO CALCULAR INGRESO
     public double calcularIngresosTotales(){
-        return 0;
+        double total = 0;
+        for (Venta venta : listaVentas) {
+            if (venta != null && venta.isConfirmada()) {
+                total = total + venta.calcularValorTotal();
+            }
+        }
+        return total;
     }
 
     @Override
     public String toString() {
-        return codigo=", nombre='" + nombre + '\'' +
+        return "codigo='" + codigo + '\'' +
+                ", nombre='" + nombre + '\'' +
                 ", direccion='" + direccion + '\'' +
                 ", ciudad='" + ciudad + '\'' +
                 ", listaInventario=" + listaInventario +

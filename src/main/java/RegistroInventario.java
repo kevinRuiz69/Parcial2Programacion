@@ -6,17 +6,17 @@ public class RegistroInventario {
     private int cantidadDisponible;
 
     //RELACONES
-    public Prenda prenda;
+    private Prenda prenda;
     private Sucursal sucursal;
-    private TallaPrenda tallaPrenda;
+    private String talla;
     private List<DetalleVenta> listaDetallesVendidos;
 
-    public RegistroInventario(String color, int cantidadDisponible, Prenda prenda, Sucursal sucursal, TallaPrenda tallaPrenda) {
+    public RegistroInventario(String color, int cantidadDisponible, Prenda prenda, Sucursal sucursal, String talla) {
         this.color = color;
         this.cantidadDisponible = cantidadDisponible;
         this.prenda = prenda;
         this.sucursal = sucursal;
-        this.tallaPrenda = tallaPrenda;
+        this.talla = talla;
         this.listaDetallesVendidos = new ArrayList<>();
     }
 
@@ -52,12 +52,12 @@ public class RegistroInventario {
         this.sucursal = sucursal;
     }
 
-    public TallaPrenda getTallaPrenda() {
-        return tallaPrenda;
+    public String getTalla() {
+        return talla;
     }
 
-    public void setTallaPrenda(TallaPrenda tallaPrenda) {
-        this.tallaPrenda = tallaPrenda;
+    public void setTalla(String talla) {
+        this.talla = talla;
     }
 
     public List<DetalleVenta> getListaDetallesVendidos() {
@@ -65,7 +65,11 @@ public class RegistroInventario {
     }
 
     public void setListaDetallesVendidos(List<DetalleVenta> listaDetallesVendidos) {
-        this.listaDetallesVendidos = listaDetallesVendidos;
+        if (listaDetallesVendidos == null) {
+            this.listaDetallesVendidos = new ArrayList<>();
+        } else {
+            this.listaDetallesVendidos = listaDetallesVendidos;
+        }
     }
 
     // METODO STOCK SUFICIENTE
@@ -81,15 +85,21 @@ public class RegistroInventario {
     }
 
     public void registrarDetalleVendido(DetalleVenta detalle) {
-        listaDetallesVendidos.add(detalle);
+        if (detalle != null) {
+            if (listaDetallesVendidos == null) {
+                listaDetallesVendidos = new ArrayList<>();
+            }
+            listaDetallesVendidos.add(detalle);
+        }
     }
 
     @Override
     public String toString() {
-        return "color='" + color + '\'' +
-                ", cantidadDisponible=" + cantidadDisponible +
-                ", prenda=" + prenda +
-                ", Sucursal=" + sucursal +
-                ", tallaPrenda=" + tallaPrenda;
+        return "Prenda: " + prenda.getNombre() +
+                ", codigo: " + prenda.getCodigo() +
+                ", talla: " + talla +
+                ", color: " + color +
+                ", disponibles: " + cantidadDisponible +
+                ", sucursal: " + sucursal.getNombre();
     }
 }

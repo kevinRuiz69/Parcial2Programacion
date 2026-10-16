@@ -50,7 +50,11 @@ public class ModaStyle {
     }
 
     public void setListaSucursales(List<Sucursal> listaSucursales) {
-        this.listaSucursales = listaSucursales;
+        if (listaSucursales == null) {
+            this.listaSucursales = new ArrayList<>();
+        } else {
+            this.listaSucursales = listaSucursales;
+        }
     }
 
     public List<Prenda> getListaPrendas() {
@@ -58,7 +62,11 @@ public class ModaStyle {
     }
 
     public void setListaPrendas(List<Prenda> listaPrendas) {
-        this.listaPrendas = listaPrendas;
+        if (listaPrendas == null) {
+            this.listaPrendas = new ArrayList<>();
+        } else {
+            this.listaPrendas = listaPrendas;
+        }
     }
 
     public List<PersonaVinculada> getListaPersonas() {
@@ -66,24 +74,46 @@ public class ModaStyle {
     }
 
     public void setListaPersonas(List<PersonaVinculada> listaPersonas) {
-        this.listaPersonas = listaPersonas;
+        if (listaPersonas == null) {
+            this.listaPersonas = new ArrayList<>();
+        } else {
+            this.listaPersonas = listaPersonas;
+        }
     }
 
     //METODO REGISTRAR SUCURSAL
 
     public boolean registrarSucursal(Sucursal sucursal){
-        if (buscarSucursal(sucursal.getCodigo()) == null) {
-            listaSucursales.add(sucursal);
-            return true;
+        if (sucursal == null || verificarSucursal(sucursal.getCodigo())) {
+            return false;
         }
-        return false;
+        listaSucursales.add(sucursal);
+        return true;
     }
 
     //METODO REGISTRAR PRENDA
     public boolean registrarPrenda(Prenda prenda){
-        if (buscarPrenda(prenda.getCodigo()) == null) {
-            listaPrendas.add(prenda);
-            return true;
+        if (prenda == null || verificarPrenda(prenda.getCodigo())) {
+            return false;
+        }
+        listaPrendas.add(prenda);
+        return true;
+    }
+
+    public boolean verificarSucursal(String codigo) {
+        for (Sucursal sucursal : listaSucursales) {
+            if (sucursal.getCodigo().equalsIgnoreCase(codigo)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean verificarPrenda(String codigo) {
+        for (Prenda prenda : listaPrendas) {
+            if (prenda.getCodigo().equalsIgnoreCase(codigo)) {
+                return true;
+            }
         }
         return false;
     }
@@ -108,19 +138,66 @@ public class ModaStyle {
         return null;
     }
 
-    //METODO REGISTRAR PERSONA
-    public boolean registrarPersona(PersonaVinculada persona){
-        if (buscarPersona(persona.getDocumento()) == null) {
-            listaPersonas.add(persona);
-            return true;
+    //METODO REGISTRAR CLIENTE
+    public boolean registrarCliente(Cliente cliente){
+        if (cliente == null || verificarPersona(cliente.getDocumento())) {
+            return false;
+        }
+        listaPersonas.add(cliente);
+        return true;
+    }
+
+    //METODO REGISTRAR EMPLEADO
+    public boolean registrarEmpleado(Empleado empleado){
+        if (empleado == null || verificarPersona(empleado.getDocumento())
+                || empleado.getSucursal() == null) {
+            return false;
+        }
+
+        Sucursal sucursal = buscarSucursal(empleado.getSucursal().getCodigo());
+        if (sucursal != empleado.getSucursal()) {
+            return false;
+        }
+
+        listaPersonas.add(empleado);
+        sucursal.getListaEmpleados().add(empleado);
+        return true;
+    }
+
+    public boolean verificarPersona(String documento) {
+        for (PersonaVinculada persona : listaPersonas) {
+            if (persona.getDocumento().equalsIgnoreCase(documento)) {
+                return true;
+            }
         }
         return false;
     }
-    //METODO BUSCAR PERSONA
+
+    //METODO BUSCAR PERSONA POR DOCUMENTO
     public PersonaVinculada buscarPersona (String documento){
         for (PersonaVinculada persona: listaPersonas){
             if (documento.equalsIgnoreCase(persona.getDocumento())){
                 return persona;
+            }
+        }
+        return null;
+    }
+
+    public Cliente buscarCliente(String documento){
+        for (PersonaVinculada persona : listaPersonas) {
+            if (persona instanceof Cliente
+                    && documento.equalsIgnoreCase(persona.getDocumento())) {
+                return (Cliente) persona;
+            }
+        }
+        return null;
+    }
+
+    public Empleado buscarEmpleado(String documento){
+        for (PersonaVinculada persona : listaPersonas) {
+            if (persona instanceof Empleado
+                    && documento.equalsIgnoreCase(persona.getDocumento())) {
+                return (Empleado) persona;
             }
         }
         return null;
@@ -144,16 +221,14 @@ public class ModaStyle {
 
     //METODO PRENDA MAS VENDIDAD
     public Prenda obtenerPrendaMasVendida(){
-        if (listaPrendas.size() == 0) {
-            return null;
-        }
+        Prenda prendaMasVendida = null;
+        int mayorCantidad = 0;
 
-        Prenda prendaMasVendida = listaPrendas.get(0);
-
-        for (int i = 1; i < listaPrendas.size(); i++) {
-            if (listaPrendas.get(i).calcularTotalUnidadesVendidas()
-                    > prendaMasVendida.calcularTotalUnidadesVendidas()) {
-                prendaMasVendida = listaPrendas.get(i);
+        for (Prenda prenda : listaPrendas) {
+            int unidadesVendidas = prenda.calcularTotalUnidadesVendidas();
+            if (unidadesVendidas > mayorCantidad) {
+                mayorCantidad = unidadesVendidas;
+                prendaMasVendida = prenda;
             }
         }
 

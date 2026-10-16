@@ -1,14 +1,14 @@
 public class DetalleVenta {
     private RegistroInventario inventario;
     private int cantidadComprada;
-    private double precioUnitarioConRecargo;
+    private double precioUnitarioFinal;
     private double subtotal;
 
     public DetalleVenta(RegistroInventario inventario, int cantidadComprada,
-                        double precioUnitarioConRecargo, double subtotal) {
+                        double precioUnitarioFinal, double subtotal) {
         this.inventario = inventario;
         this.cantidadComprada = cantidadComprada;
-        this.precioUnitarioConRecargo = precioUnitarioConRecargo;
+        this.precioUnitarioFinal = precioUnitarioFinal;
         this.subtotal = subtotal;
     }
 
@@ -26,24 +26,28 @@ public class DetalleVenta {
 
     public void setCantidadComprada(int cantidadComprada) {
         this.cantidadComprada = cantidadComprada;
-        this.subtotal = cantidadComprada * precioUnitarioConRecargo;
+        this.subtotal = cantidadComprada * precioUnitarioFinal;
     }
 
-    public double getPrecioUnitarioConRecargo() {
-        return precioUnitarioConRecargo;
+    public double getPrecioUnitarioFinal() {
+        return precioUnitarioFinal;
     }
 
-    public void setPrecioUnitarioConRecargo(double precioUnitarioConRecargo) {
-        this.precioUnitarioConRecargo = precioUnitarioConRecargo;
-        this.subtotal = cantidadComprada * precioUnitarioConRecargo;
+    public void setPrecioUnitarioFinal(double precioUnitarioFinal) {
+        this.precioUnitarioFinal = precioUnitarioFinal;
+        this.subtotal = cantidadComprada * precioUnitarioFinal;
     }
 
     public double getSubtotal() {
         return subtotal;
     }
 
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+
     // Métodos de lógica
     public double calcularSubtotal() {
-        return cantidadComprada * precioUnitarioConRecargo;
+        return cantidadComprada * precioUnitarioFinal;
     }
 }
